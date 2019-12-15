@@ -141,13 +141,59 @@ for epoch in range(1, 100):
         optimizer.step()
         linopt.step()
         #print('loss : {}, linloss : {}'.format(loss, lin_loss))
+        if batch_idx/100==0:
+            result = torch.zeros(2, 2, 2)
+            IFYL = 0
+            IFY = 0
+            correct = 0
+            neural_correct = 0
+            for batch_idx, (data, y) in enumerate(test_loader):
+                data = data.to(device)
+                y = y.to(device)
+                # f,y,g order
+                f_y = torch.exp(MINI_train(data))
+                g_y = torch.exp(LinCL_train(data))
 
+                ff = f_y.argmax(dim=1,keepdim=True)
+                gg = g_y.argmax(dim=1,keepdim=True)
+                fyg = torch.cat((ff, y.view(y.size()[0], 1), gg), dim=1)
+
+                for i in range(0, y.size()[0]):
+                    result[fyg[i][0], fyg[i][1], fyg[i][2]] += 1
+                    #result[0, y[i], 0] += (f_y[i][0]) * (g_y[i][0])
+                    #result[1, y[i], 0] += f_y[i][1] * (g_y[i][0])
+                    #result[0, y[i], 1] += (f_y[i][0]) * g_y[i][1]
+                    #result[1, y[i], 1] += f_y[i][1] * g_y[i][1]
+
+            total = result.sum()
+
+            for fff in range(0, 2):
+                for yyy in range(0, 2):
+                    pfy = result[fff, yyy, :].sum() / total
+                    pf = result[fff, :, :].sum() / total
+                    py = result[:, yyy, :].sum() / total
+                    IFY += pfy * torch.log(pfy / pf / py)
+                    for ggg in range(0, 2):
+                        pfyg = result[fff, yyy, ggg] / total
+                        pfg = result[fff, :, ggg].sum() / total
+                        pyg = result[:, yyy, ggg].sum() / total
+                        pg = result[:, :, ggg].sum() / total
+                        IFYL += pfyg * torch.log(pfyg * pg / pfg / pyg)
+                        if yyy == ggg:
+                            correct += pfyg
+                        if fff == yyy:
+                            neural_correct += pfyg
+
+            print('IFYL : {}, IFY : {}, correct : {}, neural : {}'.format(IFYL, IFY, correct, neural_correct))
+            writer.writerow([IFYL.item(), IFY.item(), correct.item(), neural_correct.item()])
+    scheduler.step()
+    lin_scheduler.step()
+"""
     result = torch.zeros(2, 2, 2)
     IFYL = 0
     IFY = 0
     correct = 0
     neural_correct = 0
-
     for batch_idx, (data, y) in enumerate(test_loader):
         data = data.to(device)
         y = y.to(device)
@@ -187,6 +233,6 @@ for epoch in range(1, 100):
 
     print('IFYL : {}, IFY : {}, correct : {}, neural : {}'.format(IFYL, IFY, correct, neural_correct))
     writer.writerow([IFYL.item(), IFY.item(), correct.item(), neural_correct.item()])
-    scheduler.step()
-    lin_scheduler.step()
+"""
+
 

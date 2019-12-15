@@ -10,10 +10,10 @@ import pandas as pd
 
 
 
+resulty = pd.read_csv('C:/Users/KyoungseokJang/Documents/GitHub/MAB/MutualInfo_binMNIST.csv')
 
 
-sns.lineplot(x="time", y="subopt", data=resulty, ci=95, label='UCB1_reuse')
-sns.lineplot(x="time", y="subopt", data=comp_resulty, ci=95, label='UCB1_reset')
+sns.lineplot("subopt", data=resulty)
 
 plt.title('Regret analysis : Reuse vs Reset')
 plt.legend()
