@@ -15,6 +15,9 @@ p_top =0.8
 p_bot =0.2
 Times=[5000, 10000, 20000, 40000, 80000, 160000]
 alpha = 0.5
+rep = 2
+total_exp=len(Times)*rep
+record_final_regret = [0]*len(Times)
 
 for z in range(0,len(Times)):
     T = Times[z]
@@ -25,7 +28,6 @@ for z in range(0,len(Times)):
     Total_regret = 0
     Total_regret_list = np.zeros(T)
 
-    rep = 2
     w = 2 * np.floor(T ** (alpha / 2)).astype(np.int)
     D = 0.1
     plotspace = []
@@ -84,12 +86,14 @@ for z in range(0,len(Times)):
         plotspace.extend(Exp_Regret_plot)
         each_regret_recorder.extend(each_regret_plot)
         minus_Delta_recorder.extend(minus_Delta_plot)
+        record_final_regret[z*rep+s]=Exp_Regret
 
 
     timeliness = ['time']+wholetime
     plotspacess = ['subopt']+plotspace
     eachregretss = ['each_regret']+each_regret_recorder
     minusdeltass = ['minus_Delta']+minus_Delta_recorder
+    finalrecord = ['final_record']+record_final_regret
 
     rows = zip(timeliness, plotspacess, eachregretss, minusdeltass)
 
@@ -98,6 +102,8 @@ for z in range(0,len(Times)):
         writer = csv.writer(f)
         for row in rows:
             writer.writerow(row)
+        writer.writerow(finalrecord)
+        print(finalrecord)
 
 """
 resulty=pd.read_csv(file1name)
