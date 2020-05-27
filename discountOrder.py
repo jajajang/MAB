@@ -17,7 +17,7 @@ Times=[5000, 10000, 20000, 40000, 80000, 160000]
 alpha = 0.5
 rep = 2
 total_exp=len(Times)*rep
-record_final_regret = [0]*len(Times)
+record_final_regret = [0]*total_exp
 
 for z in range(0,len(Times)):
     T = Times[z]
