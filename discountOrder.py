@@ -15,7 +15,7 @@ p_top =0.8
 p_bot =0.2
 Times=[5000, 10000, 20000, 40000, 80000, 160000]
 alpha = 0.5
-rep = 2
+rep = 5
 total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
 
@@ -86,7 +86,7 @@ for z in range(0,len(Times)):
         plotspace.extend(Exp_Regret_plot)
         each_regret_recorder.extend(each_regret_plot)
         minus_Delta_recorder.extend(minus_Delta_plot)
-        record_final_regret[z*rep+s]=Exp_Regret
+        record_final_regret[z*rep+s]=np.sum(minus_Delta_plot)
 
 
     timeliness = ['time']+wholetime
