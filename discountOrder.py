@@ -29,7 +29,7 @@ for z in range(0,len(Times)):
     Total_regret = 0
     Total_regret_list = np.zeros(T)
 
-    w = 20*np.floor(T ** (alpha / 2)).astype(np.int)
+    w = 4*np.floor(T ** (alpha / 2)).astype(np.int)
     D = 0.1
     plotspace = []
     wholetime = []
