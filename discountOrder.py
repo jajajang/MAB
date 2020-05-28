@@ -11,24 +11,25 @@ def triangle_wave(t,delta, low, high):
     return (high-low)*2*np.abs(t/peri-np.floor(t/peri+0.5))+low
 
 k = 2
-p_top =0.8
-p_bot =0.2
-Times=[5000, 10000, 20000, 40000, 80000, 160000]
+p_top =0.9
+p_bot =0.1
+Times=[10000, 20000, 40000, 50000, 60000, 80000]
 alpha = 0.5
 rep = 5
 total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
+record_total_regret = [0]*total_exp
 
 for z in range(0,len(Times)):
     T = Times[z]
-    delta = T ** (-1 * alpha)/10
+    delta = T ** (-1 * alpha)
 
     Regret_hist = 0
     Regret_hist_list = np.zeros(T)
     Total_regret = 0
     Total_regret_list = np.zeros(T)
 
-    w = 20 * np.floor(T ** (alpha / 2)).astype(np.int)
+    w = 20*np.floor(T ** (alpha / 2)).astype(np.int)
     D = 0.1
     plotspace = []
     wholetime = []
@@ -87,6 +88,7 @@ for z in range(0,len(Times)):
         each_regret_recorder.extend(each_regret_plot)
         minus_Delta_recorder.extend(minus_Delta_plot)
         record_final_regret[z*rep+s]=np.sum(minus_Delta_plot)
+        record_total_regret[z*rep+s]=Exp_Regret
 
 
     timeliness = ['time']+wholetime
@@ -94,6 +96,7 @@ for z in range(0,len(Times)):
     eachregretss = ['each_regret']+each_regret_recorder
     minusdeltass = ['minus_Delta']+minus_Delta_recorder
     finalrecord = ['final_record']+record_final_regret
+    totalrecord = ['total_record']+record_total_regret
 
     rows = zip(timeliness, plotspacess, eachregretss, minusdeltass)
 
@@ -103,7 +106,11 @@ for z in range(0,len(Times)):
         for row in rows:
             writer.writerow(row)
         writer.writerow(finalrecord)
+        writer.writerow(totalrecord)
+        print('minusDelta : ')
         print(finalrecord)
+        print('totalRecord : ')
+        print(totalrecord)
 
 """
 resulty=pd.read_csv(file1name)
