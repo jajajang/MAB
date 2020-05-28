@@ -21,14 +21,14 @@ record_final_regret = [0]*total_exp
 
 for z in range(0,len(Times)):
     T = Times[z]
-    delta = T ** (-1 * alpha)
+    delta = T ** (-1 * alpha)/10
 
     Regret_hist = 0
     Regret_hist_list = np.zeros(T)
     Total_regret = 0
     Total_regret_list = np.zeros(T)
 
-    w = 2 * np.floor(T ** (alpha / 2)).astype(np.int)
+    w = 20 * np.floor(T ** (alpha / 2)).astype(np.int)
     D = 0.1
     plotspace = []
     wholetime = []
