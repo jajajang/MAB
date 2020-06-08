@@ -20,17 +20,21 @@ total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
 record_total_regret = [0]*total_exp
 
+
+def dis_time(t,gamma):
+    return (1-gamma**t)/(1-gamma)
+
 for z in range(0,len(Times)):
     T = Times[z]
     delta = T ** (-1 * alpha)
-
+    gamma = 1 - 1 / (4 * np.sqrt(T))
     Regret_hist = 0
     Regret_hist_list = np.zeros(T)
     Total_regret = 0
     Total_regret_list = np.zeros(T)
 
-    w = 4*np.floor(T ** (alpha / 2)).astype(np.int)
-    D = 0.1
+    #w = 4*np.floor(T ** (alpha / 2)).astype(np.int)
+    D = 0.1 #large Delta..... 빼서 계산할 예정
     plotspace = []
     wholetime = []
     each_regret_recorder = []
@@ -49,6 +53,9 @@ for z in range(0,len(Times)):
         current_action=np.zeros((k,1))
         current_reward=np.zeros((k,1))
         ucb = np.zeros(k)
+        dis_actval=np.zeros((2,1))
+        dis_reward=np.zeros((2,1))
+        dis_ucb = np.zeros(k)
 
         virtual_reward=np.zeros((2,1))
 
@@ -61,8 +68,9 @@ for z in range(0,len(Times)):
                 action=1
             else:
                 for i in range(0, k):
-                    ucb[i] = np.sum(reward_list[i, -w:]) / np.sum(action_list[i, -w:]) + np.sqrt(
-                        2 * np.log(t) / np.sum(action_list[i, -w:]))
+                    ucb[i] = dis_reward[i]/dis_actval[i] + np.sqrt(0.5*np.log(dis_time(t, gamma))/dis_actval[i])
+#                    ucb[i] = np.sum(reward_list[i, -w:]) / np.sum(action_list[i, -w:]) + np.sqrt(
+#                        2 * np.log(t) / np.sum(action_list[i, -w:]))
                     action = np.argmax(ucb)
 
             current_action = np.zeros((2,1))
@@ -75,6 +83,9 @@ for z in range(0,len(Times)):
 
             action_list = np.c_[action_list, current_action]
             reward_list = np.c_[reward_list, current_reward]
+
+            dis_actval = dis_actval * gamma + current_action
+            dis_reward = dis_reward * gamma + current_reward
 
             each_regret =np.max(p)-p[action]
             Exp_Regret += each_regret
@@ -100,7 +111,7 @@ for z in range(0,len(Times)):
 
     rows = zip(timeliness, plotspacess, eachregretss, minusdeltass)
 
-    file1name=f'Order_T_{T}_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}.csv'
+    file1name=f'Order_T_{T}_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_discount.csv'
     with open(file1name, "w", newline='') as f:
         writer = csv.writer(f)
         for row in rows:
