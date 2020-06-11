@@ -13,9 +13,9 @@ def triangle_wave(t,delta, low, high):
 k = 2
 p_top =0.9
 p_bot =0.1
-Times=[10000, 20000, 40000, 50000, 60000, 80000]
+Times=[10000, 20000, 40000, 50000, 60000, 70000, 80000, 100000, 160000]
 alpha = 0.8
-rep = 5
+rep = 15
 total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
 record_total_regret = [0]*total_exp
@@ -27,14 +27,14 @@ def dis_time(t,gamma):
 for z in range(0,len(Times)):
     T = Times[z]
     delta = T ** (-1 * alpha)
-    gamma = 1 - 1 / (4 * np.sqrt(T))
+    gamma = 1 - 1 / (T**(alpha/2))
     Regret_hist = 0
     Regret_hist_list = np.zeros(T)
     Total_regret = 0
     Total_regret_list = np.zeros(T)
 
     #w = 4*np.floor(T ** (alpha / 2)).astype(np.int)
-    D = 0.1 #large Delta..... 빼서 계산할 예정
+    D = 0.05 #large Delta..... 빼서 계산할 예정
     plotspace = []
     wholetime = []
     each_regret_recorder = []
