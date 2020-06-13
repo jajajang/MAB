@@ -13,9 +13,9 @@ def triangle_wave(t,delta, low, high):
 k = 2
 p_top =0.9
 p_bot =0.1
-Times=[10000, 20000, 40000, 50000, 60000, 70000, 80000, 100000, 160000]
+Times=[100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 1000000, 1600000]
 alpha = 0.8
-rep = 15
+rep = 5
 total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
 record_total_regret = [0]*total_exp
