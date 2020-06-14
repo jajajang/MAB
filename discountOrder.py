@@ -13,8 +13,8 @@ def triangle_wave(t,delta, low, high):
 k = 2
 p_top =0.9
 p_bot =0.1
-Times=[100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 1000000, 1600000]
-alpha = 0.8
+Times=[100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 1000000]
+alpha = 0.6
 rep = 5
 total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
@@ -109,15 +109,13 @@ for z in range(0,len(Times)):
     finalrecord = ['final_record']+record_final_regret
     totalrecord = ['total_record']+record_total_regret
 
-    rows = zip(timeliness, plotspacess, eachregretss, minusdeltass)
-
-    file1name=f'Order_T_{T}_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_discount.csv'
+    #rows = zip(timeliness, plotspacess, eachregretss, minusdeltass)
+    rows = zip(finalrecord, totalrecord)
+    file1name=f'Order_T_{T}_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_discount_result_only.csv'
     with open(file1name, "w", newline='') as f:
         writer = csv.writer(f)
         for row in rows:
             writer.writerow(row)
-        writer.writerow(finalrecord)
-        writer.writerow(totalrecord)
         print('minusDelta : ')
         print(finalrecord)
         print('totalRecord : ')
