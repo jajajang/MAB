@@ -1,3 +1,4 @@
+import argparse
 import ChangeDetection as cd
 import numpy as np
 from scipy.stats import beta
@@ -6,21 +7,36 @@ import seaborn as sns; sns.set()
 import csv
 import pandas as pd
 
+
+parser = argparse.ArgumentParser(description='VAE MNIST Example')
+parser.add_argument('--alpha', type=float, default=0.8, metavar='N',
+                    help='alpha_value')
+parser.add_argument('--ptop', type=float, default=0.8, metavar='N',
+                    help='bernoulli probability top')
+parser.add_argument('--pbot', type=float, default=0.2, metavar='N',
+                    help='bernoulli probability bottom')
+parser.add_argument('--repeat', type=int, default=5, metavar='N',
+                    help='Number of repeated experiments')
+args=parser.parse_args()
+
+
 def triangle_wave(t,delta, low, high):
     peri=2*(high-low)/delta
     return (high-low)*2*np.abs(t/peri-np.floor(t/peri+0.5))+low
 
+
 k = 2
-p_top =0.9
-p_bot =0.1
+p_top =args.ptop
+p_bot =args.pbot
 Times=[100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 1000000]
-alpha = 0.6
-rep = 5
+alpha = args.alpha
+rep = args.repeat
 total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
 record_total_regret = [0]*total_exp
 
-
+check_parser= f'Order_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}'
+print(check_parser)
 def dis_time(t,gamma):
     return (1-gamma**t)/(1-gamma)
 
