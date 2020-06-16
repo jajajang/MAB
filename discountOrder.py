@@ -17,6 +17,8 @@ parser.add_argument('--pbot', type=float, default=0.2, metavar='N',
                     help='bernoulli probability bottom')
 parser.add_argument('--repeat', type=int, default=5, metavar='N',
                     help='Number of repeated experiments')
+parser.add_argument('--delta', type=int, default=0.1, metavar='N',
+                    help='large delta - 기저에서 빠질 값')
 args=parser.parse_args()
 
 
@@ -34,8 +36,8 @@ rep = args.repeat
 total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
 record_total_regret = [0]*total_exp
-
-check_parser= f'Order_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}'
+D = args.delta  # large Delta..... 빼서 계산할 예정
+check_parser= f'Order_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_delta_{D}'
 print(check_parser)
 def dis_time(t,gamma):
     return (1-gamma**t)/(1-gamma)
@@ -50,7 +52,6 @@ for z in range(0,len(Times)):
     Total_regret_list = np.zeros(T)
 
     #w = 4*np.floor(T ** (alpha / 2)).astype(np.int)
-    D = 0.05 #large Delta..... 빼서 계산할 예정
     plotspace = []
     wholetime = []
     each_regret_recorder = []
