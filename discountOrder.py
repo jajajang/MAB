@@ -17,7 +17,7 @@ parser.add_argument('--pbot', type=float, default=0.2, metavar='N',
                     help='bernoulli probability bottom')
 parser.add_argument('--repeat', type=int, default=5, metavar='N',
                     help='Number of repeated experiments')
-parser.add_argument('--delta', type=int, default=0.1, metavar='N',
+parser.add_argument('--delta', type=float, default=0.1, metavar='N',
                     help='large delta - 기저에서 빠질 값')
 args=parser.parse_args()
 
