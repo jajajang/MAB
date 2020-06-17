@@ -19,6 +19,9 @@ parser.add_argument('--repeat', type=int, default=5, metavar='N',
                     help='Number of repeated experiments')
 parser.add_argument('--delta', type=float, default=0.1, metavar='N',
                     help='large delta - 기저에서 빠질 값')
+parser.add_argument('--factor', type=float, default=0.5, metavar='N',
+                    help='large delta - 기저에서 빠질 값')
+
 args=parser.parse_args()
 
 
@@ -30,14 +33,15 @@ def triangle_wave(t,delta, low, high):
 k = 2
 p_top =args.ptop
 p_bot =args.pbot
-Times=[100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 1000000]
+Times=[100000, 200000, 400000, 800000, 1600000]
 alpha = args.alpha
 rep = args.repeat
+factor = args.factor
 total_exp=len(Times)*rep
 record_final_regret = [0]*total_exp
 record_total_regret = [0]*total_exp
 D = args.delta  # large Delta..... 빼서 계산할 예정
-check_parser= f'Order_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_delta_{D}'
+check_parser= f'Order_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_delta_{D}_factor_{factor}'
 print(check_parser)
 def dis_time(t,gamma):
     return (1-gamma**t)/(1-gamma)
@@ -45,7 +49,7 @@ def dis_time(t,gamma):
 for z in range(0,len(Times)):
     T = Times[z]
     delta = T ** (-1 * alpha)
-    gamma = 1 - 1 / (T**(alpha/2))
+    gamma = 1 - 1 / (T**(alpha*factor))
     Regret_hist = 0
     Regret_hist_list = np.zeros(T)
     Total_regret = 0
@@ -128,7 +132,7 @@ for z in range(0,len(Times)):
 
     #rows = zip(timeliness, plotspacess, eachregretss, minusdeltass)
     rows = zip(finalrecord, totalrecord)
-    file1name=f'Order_T_{T}_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_discount_result_only.csv'
+    file1name=f'Order_T_{T}_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_delta_{D}_factor_{factor}_discount_result_only.csv'
     with open(file1name, "w", newline='') as f:
         writer = csv.writer(f)
         for row in rows:
