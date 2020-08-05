@@ -139,7 +139,7 @@ for alpha in alphy:
 
                 #rows = zip(timeliness, plotspacess, eachregretss, minusdeltass)
                 rows = zip(finalrecord, totalrecord)
-                file1name=f'tenthgamma_Order_T_{T}_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_delta_{D}_factor_{factor}_discount_result_only.csv'
+                file1name=f'xifix_Order_T_{T}_alpha_{alpha}_ptop_{p_top}_pbot_{p_bot}_delta_{D}_factor_{factor}_discount_result_only.csv'
                 with open(file1name, "w", newline='') as f:
                     writer = csv.writer(f)
                     for row in rows:
